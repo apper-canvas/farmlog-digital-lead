@@ -587,13 +587,11 @@ const getProgressPercentage = () => {
                         className="h-full bg-success transition-all duration-300"
                         style={{
                             width: crop.status === "Planted" ? "0%" : crop.status === "Growing" ? "33%" : crop.status === "Ready to Harvest" ? "66%" : crop.status === "Harvested" ? "100%" : "0%"
-                        }}></div>
+}}></div>
                 </div>
             </div>
         </Card>
-</Card>
     </motion.div>
-
       {/* Edit Crop Form Modal */}
       <CropEditForm
         isOpen={showEditForm}
