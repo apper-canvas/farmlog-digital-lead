@@ -81,7 +81,7 @@ return (
             </button>
           </div>
           
-          <div className="flex space-x-1 ml-4">
+<div className="flex space-x-1 ml-4">
             <Button
               variant="ghost"
               size="sm"
@@ -90,6 +90,7 @@ return (
                 e.stopPropagation();
                 onEdit(task);
               }}
+              className="text-black"
             />
             <Button
               variant="ghost"
@@ -99,7 +100,7 @@ return (
                 e.stopPropagation();
                 onDelete(task.id);
               }}
-              className="text-error hover:bg-error/10"
+              className="text-black hover:bg-error/10"
             />
           </div>
         </div>

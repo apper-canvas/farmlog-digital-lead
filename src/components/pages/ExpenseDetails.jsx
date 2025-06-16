@@ -365,6 +365,7 @@ const loadExpenseData = async () => {
             variant="outline"
             icon="Edit"
             onClick={() => setShowEditForm(true)}
+            className="text-black"
           >
             Edit Expense
           </Button>
@@ -372,7 +373,7 @@ const loadExpenseData = async () => {
             variant="outline"
             icon="Trash2"
             onClick={handleDelete}
-            className="text-error hover:bg-error/10 border-error/20"
+            className="text-black hover:bg-error/10 border-error/20"
           >
             Delete Expense
           </Button>

@@ -385,11 +385,11 @@ const getProgressPercentage = () => {
         </div>
         <div className="flex items-center space-x-3">
             <Badge variant={getStatusColor(crop.status)} className="text-sm">
-                {crop?.status}
-            </Badge>
-            <Button variant="outline" icon="Edit" onClick={() => setShowEditForm(true)}>Edit Crop
-                          </Button>
-            {crop.status === "Growing" && <Button
+{crop?.status}
+        </Badge>
+        <Button variant="outline" icon="Edit" onClick={() => setShowEditForm(true)} className="text-black">Edit Crop
+                      </Button>
+        {crop.status === "Growing" && <Button
                 variant="secondary"
                 icon="CheckCircle"
                 onClick={() => handleStatusUpdate("Ready to Harvest")}

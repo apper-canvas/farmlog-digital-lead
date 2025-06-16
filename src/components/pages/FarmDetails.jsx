@@ -181,11 +181,12 @@ const handleEdit = () => {
           </div>
         </div>
         
-        <div className="flex space-x-3">
+<div className="flex space-x-3">
           <Button
             variant="outline"
             icon="Edit"
             onClick={handleEdit}
+            className="text-black"
           >
             Edit Farm
           </Button>
@@ -193,7 +194,7 @@ const handleEdit = () => {
             variant="outline"
             icon="Trash2"
             onClick={handleDelete}
-            className="text-error hover:bg-error/10 border-error/20"
+            className="text-black hover:bg-error/10 border-error/20"
           >
             Delete Farm
           </Button>
