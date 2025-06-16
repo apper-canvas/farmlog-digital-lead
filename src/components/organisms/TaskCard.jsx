@@ -6,7 +6,7 @@ import Card from '@/components/atoms/Card';
 import Button from '@/components/atoms/Button';
 import Badge from '@/components/atoms/Badge';
 
-const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete }) => {
+const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete, onView }) => {
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
       case 'high': return 'error';
@@ -18,7 +18,7 @@ const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete }) => {
 
   const isOverdue = new Date(task.dueDate) < new Date() && !task.completed;
 
-  return (
+return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -28,7 +28,10 @@ const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete }) => {
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3 flex-1">
             <button
-              onClick={() => onToggleComplete(task.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleComplete(task.id);
+              }}
               className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
                 task.completed
                   ? 'bg-success border-success text-white'
@@ -38,7 +41,10 @@ const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete }) => {
               {task.completed && <ApperIcon name="Check" size={12} />}
             </button>
             
-            <div className="flex-1 min-w-0">
+            <button
+              onClick={() => onView && onView(task)}
+              className="flex-1 min-w-0 text-left hover:bg-gray-50 rounded-lg p-2 -m-2 transition-colors"
+            >
               <h4 className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
                 {task.title}
               </h4>
@@ -72,7 +78,7 @@ const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete }) => {
                   {task.priority}
                 </Badge>
               </div>
-            </div>
+            </button>
           </div>
           
           <div className="flex space-x-1 ml-4">
@@ -80,13 +86,19 @@ const TaskCard = ({ task, farm, crop, onToggleComplete, onEdit, onDelete }) => {
               variant="ghost"
               size="sm"
               icon="Edit"
-              onClick={() => onEdit(task)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(task);
+              }}
             />
             <Button
               variant="ghost"
               size="sm"
               icon="Trash2"
-              onClick={() => onDelete(task.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(task.id);
+              }}
               className="text-error hover:bg-error/10"
             />
           </div>

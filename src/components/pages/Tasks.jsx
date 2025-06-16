@@ -14,6 +14,138 @@ import ErrorState from '@/components/molecules/ErrorState';
 import EmptyState from '@/components/molecules/EmptyState';
 import FormField from '@/components/molecules/FormField';
 import { taskService, farmService, cropService } from '@/services';
+const TaskDetailsModal = ({ isOpen, onClose, task, farm, crop }) => {
+  if (!isOpen || !task) return null;
+
+  const getPriorityColor = (priority) => {
+    switch (priority?.toLowerCase()) {
+      case 'high': return 'error';
+      case 'medium': return 'warning';
+      case 'low': return 'success';
+      default: return 'default';
+    }
+  };
+
+  const isOverdue = new Date(task.dueDate) < new Date() && !task.completed;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-display font-semibold text-gray-900">Task Details</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <ApperIcon name="X" size={20} />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            {/* Status and Priority */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                  task.completed
+                    ? 'bg-success border-success text-white'
+                    : 'border-gray-300'
+                }`}>
+                  {task.completed && <ApperIcon name="Check" size={14} />}
+                </div>
+                <span className={`font-medium ${task.completed ? 'text-success' : 'text-gray-600'}`}>
+                  {task.completed ? 'Completed' : 'Pending'}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Badge variant={getPriorityColor(task.priority)} size="sm">
+                  {task.priority} Priority
+                </Badge>
+                {isOverdue && !task.completed && (
+                  <Badge variant="error" size="sm">Overdue</Badge>
+                )}
+              </div>
+            </div>
+
+            {/* Task Title */}
+            <div>
+              <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+                {task.title}
+              </h3>
+            </div>
+
+            {/* Description */}
+            {task.description && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <p className="text-gray-600 whitespace-pre-wrap">{task.description}</p>
+              </div>
+            )}
+
+            {/* Farm and Crop Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Farm</label>
+                <div className="flex items-center space-x-2">
+                  <ApperIcon name="MapPin" size={16} className="text-gray-400" />
+                  <span className="text-gray-900">{farm?.name || 'Unknown Farm'}</span>
+                </div>
+              </div>
+
+              {crop && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Crop</label>
+                  <div className="flex items-center space-x-2">
+                    <ApperIcon name="Sprout" size={16} className="text-gray-400" />
+                    <span className="text-gray-900">{crop.cropType}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Due Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
+              <div className="flex items-center space-x-2">
+                <ApperIcon name="Calendar" size={16} className="text-gray-400" />
+                <span className={`${isOverdue && !task.completed ? 'text-error font-medium' : 'text-gray-900'}`}>
+                  {format(new Date(task.dueDate), 'MMM d, yyyy')}
+                </span>
+              </div>
+            </div>
+
+            {/* Created Date */}
+            {task.createdAt && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Created</label>
+                <div className="flex items-center space-x-2">
+                  <ApperIcon name="Clock" size={16} className="text-gray-400" />
+                  <span className="text-gray-900">
+                    {format(new Date(task.createdAt), 'MMM d, yyyy')}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end pt-6 border-t mt-6">
+            <Button
+              variant="primary"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const TaskForm = ({ isOpen, onClose, onSubmit, farms, crops }) => {
   const [formData, setFormData] = useState({
@@ -189,6 +321,8 @@ const Tasks = () => {
   const [priorityFilter, setPriorityFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [showTaskForm, setShowTaskForm] = useState(false);
+  const [showTaskDetails, setShowTaskDetails] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
   useEffect(() => {
     loadData();
   }, []);
@@ -265,7 +399,12 @@ const Tasks = () => {
       toast.success('Task created successfully');
     } catch (error) {
       throw error;
-    }
+}
+  };
+
+  const handleViewTask = (task) => {
+    setSelectedTask(task);
+    setShowTaskDetails(true);
   };
 
   const getTasksForDate = (date) => {
@@ -492,14 +631,15 @@ const Tasks = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-            >
+>
               <TaskCard
                 task={task}
                 farm={getFarmById(task.farmId)}
                 crop={getCropById(task.cropId)}
                 onToggleComplete={handleToggleComplete}
-onEdit={() => {/* TODO: Implement task editing */}}
+                onEdit={() => {/* TODO: Implement task editing */}}
                 onDelete={handleDeleteTask}
+                onView={handleViewTask}
               />
             </motion.div>
           ))
@@ -611,6 +751,19 @@ onEdit={() => {/* TODO: Implement task editing */}}
             onSubmit={handleCreateTask}
             farms={farms}
             crops={crops}
+/>
+        )}
+      </AnimatePresence>
+
+      {/* Task Details Modal */}
+      <AnimatePresence>
+        {showTaskDetails && (
+          <TaskDetailsModal
+            isOpen={showTaskDetails}
+            onClose={() => setShowTaskDetails(false)}
+            task={selectedTask}
+            farm={selectedTask ? getFarmById(selectedTask.farmId) : null}
+            crop={selectedTask ? getCropById(selectedTask.cropId) : null}
           />
         )}
       </AnimatePresence>
