@@ -10,8 +10,8 @@ import Badge from '@/components/atoms/Badge';
 import SkeletonLoader from '@/components/molecules/SkeletonLoader';
 import ErrorState from '@/components/molecules/ErrorState';
 import EmptyState from '@/components/molecules/EmptyState';
+import FarmForm from '@/components/organisms/FarmForm';
 import { farmService, cropService, expenseService } from '@/services';
-
 const FarmDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const FarmDetails = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [showEditForm, setShowEditForm] = useState(false);
   useEffect(() => {
     loadFarmData();
   }, [id]);
@@ -51,9 +51,14 @@ if (!farmData) {
     }
   };
 
-  const handleEdit = () => {
-    // Navigate back to farms page with edit mode
-    navigate('/farms', { state: { editFarm: farm } });
+const handleEdit = () => {
+    setShowEditForm(true);
+  };
+
+  const handleSaveFarm = (savedFarm) => {
+    setFarm(savedFarm);
+    setShowEditForm(false);
+    toast.success('Farm updated successfully');
   };
 
   const handleDelete = async () => {
@@ -419,10 +424,21 @@ if (!farmData) {
                   </Button>
                 </div>
               )}
-            </div>
+</div>
           )}
         </Card>
       </motion.div>
+
+      {/* Edit Farm Form Modal */}
+      {showEditForm && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <FarmForm
+            farm={farm}
+            onSave={handleSaveFarm}
+            onCancel={() => setShowEditForm(false)}
+          />
+        </div>
+      )}
     </div>
   );
 };

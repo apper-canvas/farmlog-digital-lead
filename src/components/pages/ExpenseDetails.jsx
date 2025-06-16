@@ -10,30 +10,210 @@ import Badge from '@/components/atoms/Badge';
 import SkeletonLoader from '@/components/molecules/SkeletonLoader';
 import ErrorState from '@/components/molecules/ErrorState';
 import EmptyState from '@/components/molecules/EmptyState';
+import FormField from '@/components/molecules/FormField';
 import { expenseService, farmService } from '@/services';
+// ExpenseEditForm Component
+const ExpenseEditForm = ({ isOpen, onClose, onSubmit, expense, farms, loading }) => {
+  const [formData, setFormData] = useState({
+    farmId: expense?.farmId || '',
+    amount: expense?.amount || '',
+    category: expense?.category || '',
+    date: expense?.date || '',
+    description: expense?.description || ''
+  });
+  const [formErrors, setFormErrors] = useState({});
+
+  const categories = [
+    'Seeds',
+    'Fertilizer', 
+    'Equipment',
+    'Labor',
+    'Fuel',
+    'Maintenance',
+    'Other'
+  ];
+
+  useEffect(() => {
+    if (expense) {
+      setFormData({
+        farmId: expense.farmId || '',
+        amount: expense.amount || '',
+        category: expense.category || '',
+        date: expense.date || '',
+        description: expense.description || ''
+      });
+    }
+  }, [expense]);
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.farmId) errors.farmId = 'Please select a farm';
+    if (!formData.amount || formData.amount <= 0) errors.amount = 'Amount must be greater than 0';
+    if (!formData.category) errors.category = 'Please select a category';
+    if (!formData.date) errors.date = 'Date is required';
+    if (!formData.description.trim()) errors.description = 'Description is required';
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      onSubmit({
+        ...formData,
+        amount: parseFloat(formData.amount)
+      });
+    }
+  };
+
+  if (!isOpen) return null;
+
+  const farmOptions = [
+    { value: '', label: 'Select a farm' },
+    ...farms.map(farm => ({ value: farm.id, label: farm.name }))
+  ];
+
+  const categoryOptions = categories.map(category => ({ value: category, label: category }));
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">Edit Expense</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="p-2"
+            >
+              <ApperIcon name="X" size={20} />
+            </Button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <FormField
+              type="select"
+              label="Farm"
+              value={formData.farmId}
+              onChange={(e) => handleInputChange('farmId', e.target.value)}
+              options={farmOptions}
+              error={formErrors.farmId}
+              required
+            />
+
+            <FormField
+              type="number"
+              label="Amount"
+              value={formData.amount}
+              onChange={(e) => handleInputChange('amount', e.target.value)}
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              error={formErrors.amount}
+              required
+            />
+
+            <FormField
+              type="select"
+              label="Category"
+              value={formData.category}
+              onChange={(e) => handleInputChange('category', e.target.value)}
+              options={categoryOptions}
+              error={formErrors.category}
+              required
+            />
+
+            <FormField
+              type="date"
+              label="Date"
+              value={formData.date}
+              onChange={(e) => handleInputChange('date', e.target.value)}
+              error={formErrors.date}
+              required
+            />
+
+            <FormField
+              type="text"
+              label="Description"
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              placeholder="Enter expense description"
+              error={formErrors.description}
+              required
+            />
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                className="flex-1"
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                className="flex-1"
+                disabled={loading}
+                loading={loading}
+              >
+                {loading ? 'Updating...' : 'Update Expense'}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const ExpenseDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [expense, setExpense] = useState(null);
   const [farm, setFarm] = useState(null);
+  const [farms, setFarms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-useEffect(() => {
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+
+  useEffect(() => {
     loadExpenseData();
   }, [id]);
 
-  const loadExpenseData = async () => {
+const loadExpenseData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const expenseData = await expenseService.getById(id);
-if (!expenseData) {
+      const [expenseData, farmsData] = await Promise.all([
+        expenseService.getById(id),
+        farmService.getAll()
+      ]);
+      
+      if (!expenseData) {
         setError('Expense not found');
         return;
       }
       
       setExpense(expenseData);
+      setFarms(farmsData);
       
       // Load farm data if farmId exists
       if (expenseData.farmId) {
@@ -60,6 +240,20 @@ if (!expenseData) {
     } catch (error) {
       toast.error(error.message || 'Failed to delete expense');
     }
+};
+
+  const handleEditExpense = async (expenseData) => {
+    setEditLoading(true);
+    try {
+      const updatedExpense = await expenseService.update(id, expenseData);
+      setExpense(updatedExpense);
+      setShowEditForm(false);
+      toast.success('Expense updated successfully');
+    } catch (error) {
+      toast.error(error.message || 'Failed to update expense');
+    } finally {
+      setEditLoading(false);
+    }
   };
 
   const getCategoryColor = (category) => {
@@ -74,7 +268,6 @@ if (!expenseData) {
     };
     return colors[category] || 'default';
   };
-
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Seeds': return 'Sprout';
@@ -167,7 +360,14 @@ if (!expenseData) {
           </div>
         </div>
         
-        <div className="flex space-x-3">
+<div className="flex space-x-3">
+          <Button
+            variant="outline"
+            icon="Edit"
+            onClick={() => setShowEditForm(true)}
+          >
+            Edit Expense
+          </Button>
           <Button
             variant="outline"
             icon="Trash2"
@@ -313,8 +513,18 @@ ${expense?.amount?.toLocaleString()}
               <div className="text-sm text-gray-600">Month</div>
             </div>
           </div>
-        </Card>
+</Card>
       </motion.div>
+
+      {/* Edit Expense Form Modal */}
+      <ExpenseEditForm
+        isOpen={showEditForm}
+        onClose={() => setShowEditForm(false)}
+        onSubmit={handleEditExpense}
+        expense={expense}
+        farms={farms}
+        loading={editLoading}
+      />
     </div>
   );
 };
