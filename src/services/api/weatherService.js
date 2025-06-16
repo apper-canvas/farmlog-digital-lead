@@ -1,3 +1,4 @@
+// Weather service remains mock-based as no corresponding database table exists
 import weatherData from '../mockData/weather.json';
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
