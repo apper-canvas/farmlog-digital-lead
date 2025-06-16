@@ -5,6 +5,7 @@ import ExpenseDetails from '@/components/pages/ExpenseDetails';
 import Expenses from '@/components/pages/Expenses';
 import FarmDetails from '@/components/pages/FarmDetails';
 import Farms from '@/components/pages/Farms';
+import Income from '@/components/pages/Income';
 import Tasks from '@/components/pages/Tasks';
 import Weather from '@/components/pages/Weather';
 
@@ -37,12 +38,19 @@ export const routes = {
     icon: 'CheckSquare',
     component: Tasks
   },
-  expenses: {
+expenses: {
     id: 'expenses',
     label: 'Expenses',
     path: '/expenses',
     icon: 'Receipt',
     component: Expenses
+  },
+  income: {
+    id: 'income',
+    label: 'Income',
+    path: '/income',
+    icon: 'TrendingUp',
+    component: Income
   },
   weather: {
     id: 'weather',
