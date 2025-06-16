@@ -74,6 +74,10 @@ export const detailRoutes = {
   }
 };
 
+// Export arrays for easy consumption by React Router
 export const routeArray = Object.values(routes);
 export const detailRouteArray = Object.values(detailRoutes);
+
+// Export all routes combined for convenient access
+export const allRoutes = [...routeArray, ...detailRouteArray];
 export default routes;
