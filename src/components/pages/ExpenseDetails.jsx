@@ -19,8 +19,7 @@ const ExpenseDetails = () => {
   const [farm, setFarm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
+useEffect(() => {
     loadExpenseData();
   }, [id]);
 

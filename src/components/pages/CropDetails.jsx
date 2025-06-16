@@ -74,11 +74,11 @@ const CropDetails = () => {
     }
   };
 
-  const getProgressPercentage = () => {
+const getProgressPercentage = () => {
     if (!crop) return 0;
     
-    const plantingDate = new Date(crop.plantingDate);
-    const harvestDate = new Date(crop.expectedHarvestDate);
+    const plantingDate = new Date(crop.planting_date);
+    const harvestDate = new Date(crop.expected_harvest_date);
     const today = new Date();
     
     const totalDays = differenceInDays(harvestDate, plantingDate);
@@ -278,12 +278,12 @@ const CropDetails = () => {
           </div>
           <div className="space-y-3">
             <div>
-              <span className="text-sm text-gray-600">Planted</span>
-              <p className="font-medium">{format(new Date(crop.plantingDate), 'MMM d, yyyy')}</p>
+<span className="text-sm text-gray-600">Planted</span>
+              <p className="font-medium">{format(new Date(crop.planting_date), 'MMM d, yyyy')}</p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Expected Harvest</span>
-              <p className="font-medium">{format(new Date(crop.expectedHarvestDate), 'MMM d, yyyy')}</p>
+              <p className="font-medium">{format(new Date(crop.expected_harvest_date), 'MMM d, yyyy')}</p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Progress</span>
@@ -322,8 +322,8 @@ const CropDetails = () => {
                   <ApperIcon name="Seed" size={20} />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium">Planted</p>
-                  <p className="text-xs text-gray-600">{format(new Date(crop.plantingDate), 'MMM d')}</p>
+<p className="text-sm font-medium">Planted</p>
+                  <p className="text-xs text-gray-600">{format(new Date(crop.planting_date), 'MMM d')}</p>
                 </div>
               </div>
 

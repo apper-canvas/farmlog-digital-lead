@@ -218,9 +218,9 @@ const FarmDetails = () => {
               <span className="text-sm text-gray-600">Size</span>
               <p className="font-medium">{farm.size} acres</p>
             </div>
-            <div>
+<div>
               <span className="text-sm text-gray-600">Created</span>
-              <p className="font-medium">{format(new Date(farm.createdAt), 'MMM d, yyyy')}</p>
+              <p className="font-medium">{format(new Date(farm.created_at), 'MMM d, yyyy')}</p>
             </div>
           </div>
         </Card>
@@ -315,9 +315,9 @@ const FarmDetails = () => {
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="text-right">
+<div className="text-right">
                         <p className="text-sm text-gray-600">Planted</p>
-                        <p className="text-sm font-medium">{format(new Date(crop.plantingDate), 'MMM d, yyyy')}</p>
+                        <p className="text-sm font-medium">{format(new Date(crop.planting_date), 'MMM d, yyyy')}</p>
                       </div>
                       <Badge variant={getStatusColor(crop.status)}>
                         {crop.status}
@@ -386,7 +386,7 @@ const FarmDetails = () => {
                           'text-gray-500'
                         } />
                       </div>
-                      <div>
+<div>
                         <h4 className="font-medium text-gray-900">{expense.description}</h4>
                         <p className="text-sm text-gray-600">{format(new Date(expense.date), 'MMM d, yyyy')}</p>
                       </div>
