@@ -210,17 +210,19 @@ const FarmDetails = () => {
             <h3 className="font-display font-semibold text-lg">Farm Details</h3>
           </div>
           <div className="space-y-3">
-            <div>
+<div>
               <span className="text-sm text-gray-600">Location</span>
-              <p className="font-medium">{farm.location}</p>
+              <p className="font-medium">{farm?.location || 'Not specified'}</p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Size</span>
-              <p className="font-medium">{farm.size} acres</p>
+              <p className="font-medium">{farm?.size ? `${farm.size} acres` : 'Not specified'}</p>
             </div>
-<div>
+            <div>
               <span className="text-sm text-gray-600">Created</span>
-              <p className="font-medium">{format(new Date(farm.created_at), 'MMM d, yyyy')}</p>
+              <p className="font-medium">
+                {farm?.createdAt ? format(new Date(farm.createdAt), 'MMM d, yyyy') : 'Not available'}
+              </p>
             </div>
           </div>
         </Card>
@@ -317,10 +319,12 @@ const FarmDetails = () => {
                     <div className="flex items-center space-x-3">
 <div className="text-right">
                         <p className="text-sm text-gray-600">Planted</p>
-                        <p className="text-sm font-medium">{format(new Date(crop.planting_date), 'MMM d, yyyy')}</p>
+                        <p className="text-sm font-medium">
+                          {crop?.plantingDate ? format(new Date(crop.plantingDate), 'MMM d, yyyy') : 'Not set'}
+                        </p>
                       </div>
-                      <Badge variant={getStatusColor(crop.status)}>
-                        {crop.status}
+                      <Badge variant={getStatusColor(crop?.status)}>
+                        {crop?.status || 'Unknown'}
                       </Badge>
                     </div>
                   </div>

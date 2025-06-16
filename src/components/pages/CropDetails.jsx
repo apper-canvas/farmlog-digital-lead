@@ -75,19 +75,28 @@ const CropDetails = () => {
   };
 
 const getProgressPercentage = () => {
-    if (!crop) return 0;
+    if (!crop?.plantingDate || !crop?.expectedHarvestDate) return 0;
     
-    const plantingDate = new Date(crop.planting_date);
-    const harvestDate = new Date(crop.expected_harvest_date);
-    const today = new Date();
-    
-    const totalDays = differenceInDays(harvestDate, plantingDate);
-    const daysPassed = differenceInDays(today, plantingDate);
-    
-    const percentage = Math.min(Math.max((daysPassed / totalDays) * 100, 0), 100);
-    return Math.round(percentage);
+    try {
+      const plantingDate = new Date(crop.plantingDate);
+      const harvestDate = new Date(crop.expectedHarvestDate);
+      const today = new Date();
+      
+      // Validate dates
+      if (isNaN(plantingDate.getTime()) || isNaN(harvestDate.getTime())) return 0;
+      
+      const totalDays = differenceInDays(harvestDate, plantingDate);
+      const daysPassed = differenceInDays(today, plantingDate);
+      
+      if (totalDays <= 0) return 0;
+      
+      const percentage = Math.min(Math.max((daysPassed / totalDays) * 100, 0), 100);
+      return Math.round(percentage);
+    } catch (error) {
+      console.error('Error calculating progress percentage:', error);
+      return 0;
+    }
   };
-
   if (loading) {
     return (
       <div className="p-6">
@@ -277,13 +286,17 @@ const getProgressPercentage = () => {
             <h3 className="font-display font-semibold text-lg">Timeline</h3>
           </div>
           <div className="space-y-3">
-            <div>
-<span className="text-sm text-gray-600">Planted</span>
-              <p className="font-medium">{format(new Date(crop.planting_date), 'MMM d, yyyy')}</p>
+<div>
+              <span className="text-sm text-gray-600">Planted</span>
+              <p className="font-medium">
+                {crop?.plantingDate ? format(new Date(crop.plantingDate), 'MMM d, yyyy') : 'Not set'}
+              </p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Expected Harvest</span>
-              <p className="font-medium">{format(new Date(crop.expected_harvest_date), 'MMM d, yyyy')}</p>
+              <p className="font-medium">
+                {crop?.expectedHarvestDate ? format(new Date(crop.expectedHarvestDate), 'MMM d, yyyy') : 'Not set'}
+              </p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Progress</span>
@@ -312,18 +325,20 @@ const getProgressPercentage = () => {
       >
         <Card>
           <h3 className="font-display font-semibold text-lg mb-6">Growth Timeline</h3>
-          <div className="relative">
+<div className="relative">
             <div className="flex items-center justify-between">
               {/* Planted */}
               <div className="flex flex-col items-center">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
-                  crop.status !== 'Planted' ? 'bg-success text-white' : 'bg-info text-white'
+                  crop?.status !== 'Planted' ? 'bg-success text-white' : 'bg-info text-white'
                 }`}>
                   <ApperIcon name="Seed" size={20} />
                 </div>
                 <div className="text-center">
-<p className="text-sm font-medium">Planted</p>
-                  <p className="text-xs text-gray-600">{format(new Date(crop.planting_date), 'MMM d')}</p>
+                  <p className="text-sm font-medium">Planted</p>
+                  <p className="text-xs text-gray-600">
+                    {crop?.plantingDate ? format(new Date(crop.plantingDate), 'MMM d') : 'Not set'}
+                  </p>
                 </div>
               </div>
 

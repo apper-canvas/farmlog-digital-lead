@@ -22,13 +22,14 @@ class ExpenseService {
         throw new Error(response.message);
       }
       
-      return response.data?.map(expense => ({
+return response.data?.map(expense => ({
         id: expense.Id,
         amount: expense.amount,
         category: expense.category,
         date: expense.date,
         description: expense.description || expense.Name,
-        farmId: expense.farm_id
+        farmId: expense.farm_id,
+        tags: expense.Tags
       })) || [];
     } catch (error) {
       console.error("Error fetching expenses:", error);
@@ -49,7 +50,7 @@ class ExpenseService {
         throw new Error(response.message);
       }
       
-      if (!response.data) return null;
+if (!response.data) return null;
       
       return {
         id: response.data.Id,
@@ -57,7 +58,8 @@ class ExpenseService {
         category: response.data.category,
         date: response.data.date,
         description: response.data.description || response.data.Name,
-        farmId: response.data.farm_id
+        farmId: response.data.farm_id,
+        tags: response.data.Tags
       };
     } catch (error) {
       console.error(`Error fetching expense with ID ${id}:`, error);
@@ -84,12 +86,13 @@ class ExpenseService {
       }
       
       return response.data?.map(expense => ({
-        id: expense.Id,
+id: expense.Id,
         amount: expense.amount,
         category: expense.category,
         date: expense.date,
         description: expense.description || expense.Name,
-        farmId: expense.farm_id
+        farmId: expense.farm_id,
+        tags: expense.Tags
       })) || [];
     } catch (error) {
       console.error(`Error fetching expenses for farm ${farmId}:`, error);

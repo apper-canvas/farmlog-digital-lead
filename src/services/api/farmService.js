@@ -22,12 +22,13 @@ class FarmService {
         throw new Error(response.message);
       }
       
-      return response.data?.map(farm => ({
+return response.data?.map(farm => ({
         id: farm.Id,
         name: farm.Name,
         size: farm.size,
         location: farm.location,
-        createdAt: farm.created_at || farm.CreatedOn
+        createdAt: farm.created_at || farm.CreatedOn,
+        tags: farm.Tags
       })) || [];
     } catch (error) {
       console.error("Error fetching farms:", error);
@@ -49,13 +50,13 @@ class FarmService {
       }
       
       if (!response.data) return null;
-      
-      return {
+return {
         id: response.data.Id,
         name: response.data.Name,
         size: response.data.size,
         location: response.data.location,
-        createdAt: response.data.created_at || response.data.CreatedOn
+        createdAt: response.data.created_at || response.data.CreatedOn,
+        tags: response.data.Tags
       };
     } catch (error) {
       console.error(`Error fetching farm with ID ${id}:`, error);

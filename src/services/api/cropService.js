@@ -22,7 +22,7 @@ class CropService {
         throw new Error(response.message);
       }
       
-      return response.data?.map(crop => ({
+return response.data?.map(crop => ({
         id: crop.Id,
         name: crop.Name,
         cropType: crop.crop_type,
@@ -30,7 +30,8 @@ class CropService {
         expectedHarvestDate: crop.expected_harvest_date,
         status: crop.status,
         area: crop.area,
-        farmId: crop.farm_id
+        farmId: crop.farm_id,
+        tags: crop.Tags
       })) || [];
     } catch (error) {
       console.error("Error fetching crops:", error);
@@ -49,7 +50,7 @@ class CropService {
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
-      }
+}
       
       if (!response.data) return null;
       
@@ -86,8 +87,7 @@ class CropService {
         console.error(response.message);
         throw new Error(response.message);
       }
-      
-      return response.data?.map(crop => ({
+return response.data?.map(crop => ({
         id: crop.Id,
         name: crop.Name,
         cropType: crop.crop_type,
@@ -95,7 +95,8 @@ class CropService {
         expectedHarvestDate: crop.expected_harvest_date,
         status: crop.status,
         area: crop.area,
-        farmId: crop.farm_id
+        farmId: crop.farm_id,
+        tags: crop.Tags
       })) || [];
     } catch (error) {
       console.error(`Error fetching crops for farm ${farmId}:`, error);
@@ -141,7 +142,7 @@ class CropService {
         }
         
         if (successfulRecords.length > 0) {
-          const newCrop = successfulRecords[0].data;
+const newCrop = successfulRecords[0].data;
           return {
             id: newCrop.Id,
             name: newCrop.Name,
@@ -150,7 +151,8 @@ class CropService {
             expectedHarvestDate: newCrop.expected_harvest_date,
             status: newCrop.status,
             area: newCrop.area,
-            farmId: newCrop.farm_id
+            farmId: newCrop.farm_id,
+            tags: newCrop.Tags
           };
         }
       }
@@ -207,7 +209,7 @@ class CropService {
         }
         
         if (successfulUpdates.length > 0) {
-          const updatedCrop = successfulUpdates[0].data;
+const updatedCrop = successfulUpdates[0].data;
           return {
             id: updatedCrop.Id,
             name: updatedCrop.Name,
@@ -216,7 +218,8 @@ class CropService {
             expectedHarvestDate: updatedCrop.expected_harvest_date,
             status: updatedCrop.status,
             area: updatedCrop.area,
-            farmId: updatedCrop.farm_id
+            farmId: updatedCrop.farm_id,
+            tags: updatedCrop.Tags
           };
         }
       }

@@ -230,9 +230,9 @@ useEffect(() => {
               <p className="font-medium text-gray-900 mt-1">{expense.description}</p>
             </div>
             <div>
-              <span className="text-sm text-gray-600">Date</span>
+<span className="text-sm text-gray-600">Date</span>
               <p className="font-medium text-gray-900 mt-1">
-                {format(new Date(expense.date), 'EEEE, MMMM d, yyyy')}
+                {expense?.date ? format(new Date(expense.date), 'EEEE, MMMM d, yyyy') : 'Date not available'}
               </p>
             </div>
           </div>
@@ -308,8 +308,8 @@ useEffect(() => {
               <div className="text-sm text-gray-600">Category</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-success mb-1">
-                {format(new Date(expense.date), 'MMM yyyy')}
+<div className="text-2xl font-bold text-success mb-1">
+                {expense?.date ? format(new Date(expense.date), 'MMM yyyy') : 'N/A'}
               </div>
               <div className="text-sm text-gray-600">Month</div>
             </div>
