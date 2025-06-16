@@ -28,8 +28,7 @@ useEffect(() => {
     setError(null);
     try {
       const expenseData = await expenseService.getById(id);
-      
-      if (!expenseData) {
+if (!expenseData) {
         setError('Expense not found');
         return;
       }
@@ -214,11 +213,11 @@ useEffect(() => {
             </div>
             <div>
               <h3 className="font-display font-semibold text-2xl text-gray-900">
-                ${expense.amount.toLocaleString()}
+${expense?.amount?.toLocaleString()}
               </h3>
               <div className="mt-2">
                 <Badge variant={getCategoryColor(expense.category)} className="text-sm">
-                  {expense.category}
+{expense?.category}
                 </Badge>
               </div>
             </div>
@@ -227,7 +226,7 @@ useEffect(() => {
           <div className="space-y-4">
             <div>
               <span className="text-sm text-gray-600">Description</span>
-              <p className="font-medium text-gray-900 mt-1">{expense.description}</p>
+<p className="font-medium text-gray-900 mt-1">{expense?.description}</p>
             </div>
             <div>
 <span className="text-sm text-gray-600">Date</span>
@@ -297,13 +296,13 @@ useEffect(() => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold text-primary mb-1">
-                ${expense.amount.toLocaleString()}
+${expense?.amount?.toLocaleString()}
               </div>
               <div className="text-sm text-gray-600">Total Amount</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold text-secondary mb-1">
-                {expense.category}
+{expense?.category}
               </div>
               <div className="text-sm text-gray-600">Category</div>
             </div>

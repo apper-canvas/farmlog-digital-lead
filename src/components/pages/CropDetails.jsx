@@ -30,8 +30,7 @@ const CropDetails = () => {
     setError(null);
     try {
       const cropData = await cropService.getById(id);
-      
-      if (!cropData) {
+if (!cropData) {
         setError('Crop not found');
         return;
       }
@@ -174,14 +173,14 @@ const getProgressPercentage = () => {
             Back to Crops
           </Button>
           <div>
-            <h1 className="text-2xl font-display font-bold text-gray-900">{crop.cropType}</h1>
+<h1 className="text-2xl font-display font-bold text-gray-900">{crop?.crop_type}</h1>
             <p className="text-gray-600 mt-1">Crop details and management</p>
           </div>
         </div>
         
         <div className="flex items-center space-x-3">
           <Badge variant={getStatusColor(crop.status)} className="text-sm">
-            {crop.status}
+{crop?.status}
           </Badge>
           {crop.status === 'Growing' && (
             <Button
@@ -225,17 +224,17 @@ const getProgressPercentage = () => {
           <div className="space-y-3">
             <div>
               <span className="text-sm text-gray-600">Crop Type</span>
-              <p className="font-medium">{crop.cropType}</p>
+<p className="font-medium">{crop?.crop_type}</p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Area</span>
-              <p className="font-medium">{crop.area} acres</p>
+<p className="font-medium">{crop?.area} acres</p>
             </div>
             <div>
               <span className="text-sm text-gray-600">Status</span>
               <div className="mt-1">
                 <Badge variant={getStatusColor(crop.status)}>
-                  {crop.status}
+{crop?.status}
                 </Badge>
               </div>
             </div>
