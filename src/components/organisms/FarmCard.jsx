@@ -11,8 +11,8 @@ const FarmCard = ({ farm, onEdit, onDelete, onView, cropsCount = 0 }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-    >
-      <Card hover onClick={onView} className="h-full">
+>
+      <Card hover onClick={onView && farm?.id ? onView : undefined} className="h-full">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-3">

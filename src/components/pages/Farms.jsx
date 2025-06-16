@@ -190,12 +190,19 @@ const Farms = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <FarmCard
+<FarmCard
                 farm={farm}
                 cropsCount={getCropsCount(farm.id)}
-onEdit={handleEditFarm}
+                onEdit={handleEditFarm}
                 onDelete={handleDeleteFarm}
-                onView={() => navigate(`/farms/${farm.id}`)}
+                onView={() => {
+                  if (farm?.id) {
+                    navigate(`/farms/${farm.id}`);
+                  } else {
+                    console.error('Farm ID is missing:', farm);
+                    toast.error('Unable to view farm details - invalid farm data');
+                  }
+                }}
               />
             </motion.div>
           ))}
