@@ -12,7 +12,169 @@ import TaskCard from '@/components/organisms/TaskCard';
 import SkeletonLoader from '@/components/molecules/SkeletonLoader';
 import ErrorState from '@/components/molecules/ErrorState';
 import EmptyState from '@/components/molecules/EmptyState';
+import FormField from '@/components/molecules/FormField';
 import { taskService, farmService, cropService } from '@/services';
+
+const TaskForm = ({ isOpen, onClose, onSubmit, farms, crops }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    farmId: '',
+    cropId: '',
+    priority: 'Medium',
+    dueDate: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.title.trim()) {
+      toast.error('Task title is required');
+      return;
+    }
+    if (!formData.farmId) {
+      toast.error('Please select a farm');
+      return;
+    }
+    if (!formData.dueDate) {
+      toast.error('Please select a due date');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await onSubmit(formData);
+      setFormData({
+        title: '',
+        description: '',
+        farmId: '',
+        cropId: '',
+        priority: 'Medium',
+        dueDate: ''
+      });
+      onClose();
+    } catch (error) {
+      toast.error(error.message || 'Failed to create task');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-display font-semibold text-gray-900">Create New Task</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <ApperIcon name="X" size={20} />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <FormField
+              label="Task Title"
+              type="text"
+              value={formData.title}
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              placeholder="Enter task title"
+              required
+            />
+
+            <FormField
+              label="Description"
+              type="textarea"
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              placeholder="Describe the task (optional)"
+              rows={3}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                label="Farm"
+                type="select"
+                value={formData.farmId}
+                onChange={(e) => handleInputChange('farmId', e.target.value)}
+                options={[
+                  { value: '', label: 'Select a farm' },
+                  ...farms.map(farm => ({ value: farm.id, label: farm.name }))
+                ]}
+                required
+              />
+
+              <FormField
+                label="Crop (Optional)"
+                type="select"
+                value={formData.cropId}
+                onChange={(e) => handleInputChange('cropId', e.target.value)}
+                options={[
+                  { value: '', label: 'Select a crop' },
+                  ...crops.map(crop => ({ value: crop.id, label: crop.name }))
+                ]}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                label="Priority"
+                type="select"
+                value={formData.priority}
+                onChange={(e) => handleInputChange('priority', e.target.value)}
+                options={[
+                  { value: 'Low', label: 'Low' },
+                  { value: 'Medium', label: 'Medium' },
+                  { value: 'High', label: 'High' }
+                ]}
+              />
+
+              <FormField
+                label="Due Date"
+                type="date"
+                value={formData.dueDate}
+                onChange={(e) => handleInputChange('dueDate', e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4 border-t">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onClose}
+                disabled={submitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                loading={submitting}
+                icon="Plus"
+              >
+                Create Task
+              </Button>
+            </div>
+          </form>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -26,7 +188,7 @@ const Tasks = () => {
   const [farmFilter, setFarmFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-
+  const [showTaskForm, setShowTaskForm] = useState(false);
   useEffect(() => {
     loadData();
   }, []);
@@ -88,6 +250,21 @@ const Tasks = () => {
       toast.success('Task deleted successfully');
     } catch (error) {
       toast.error(error.message || 'Failed to delete task');
+    }
+};
+
+  const handleCreateTask = async (taskData) => {
+    try {
+      const newTask = await taskService.create({
+        ...taskData,
+        completed: false,
+        createdAt: new Date().toISOString(),
+        id: Date.now().toString()
+      });
+      setTasks(prev => [newTask, ...prev]);
+      toast.success('Task created successfully');
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -300,11 +477,11 @@ const Tasks = () => {
               icon="Search"
             />
           ) : (
-            <EmptyState
+<EmptyState
               title="No tasks yet"
               description="Create your first task to start organizing your farm work."
               actionLabel="Create Task"
-              onAction={() => {/* TODO: Implement task creation */}}
+              onAction={() => setShowTaskForm(true)}
               icon="CheckSquare"
             />
           )
@@ -321,7 +498,7 @@ const Tasks = () => {
                 farm={getFarmById(task.farmId)}
                 crop={getCropById(task.cropId)}
                 onToggleComplete={handleToggleComplete}
-                onEdit={() => {/* TODO: Implement task editing */}}
+onEdit={() => {/* TODO: Implement task editing */}}
                 onDelete={handleDeleteTask}
               />
             </motion.div>
@@ -370,7 +547,11 @@ const Tasks = () => {
             </button>
           </div>
           
-          <Button variant="primary" icon="Plus">
+<Button 
+            variant="primary" 
+            icon="Plus"
+            onClick={() => setShowTaskForm(true)}
+          >
             Add Task
           </Button>
         </div>
@@ -418,8 +599,21 @@ const Tasks = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        {viewMode === 'calendar' ? renderCalendarView() : renderListView()}
+{viewMode === 'calendar' ? renderCalendarView() : renderListView()}
       </motion.div>
+
+      {/* Task Creation Form */}
+      <AnimatePresence>
+        {showTaskForm && (
+          <TaskForm
+            isOpen={showTaskForm}
+            onClose={() => setShowTaskForm(false)}
+            onSubmit={handleCreateTask}
+            farms={farms}
+            crops={crops}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
