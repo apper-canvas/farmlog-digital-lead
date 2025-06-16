@@ -171,7 +171,7 @@ if (!farmData) {
             Back to Farms
           </Button>
           <div>
-<h1 className="text-2xl font-display font-bold text-gray-900">{farm?.Name}</h1>
+<h1 className="text-2xl font-display font-bold text-gray-900">{farm?.name}</h1>
             <p className="text-gray-600 mt-1">Farm details and management</p>
           </div>
         </div>
