@@ -18,14 +18,10 @@ const Input = ({
   const [focused, setFocused] = useState(false);
   const hasValue = value && value.toString().length > 0;
 
-  return (
-<div className={`relative ${className}`}>
+return (
+    <div className={className}>
       {label && (
-        <label className={`absolute left-3 transition-all duration-200 pointer-events-none z-10 ${
-          focused || hasValue 
-            ? 'top-2 text-xs text-primary font-semibold' 
-            : 'top-4 text-sm text-gray-700 font-medium'
-        }`}>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           {label}
           {required && <span className="text-error ml-1">*</span>}
         </label>
@@ -37,15 +33,15 @@ const Input = ({
             <ApperIcon name={icon} size={18} className="text-gray-400" />
           </div>
         )}
-<input
+        <input
           type={type}
           value={value || ''}
           onChange={onChange}
-          placeholder={(!hasValue && placeholder) ? placeholder : ''}
+          placeholder={placeholder}
           disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className={`w-full ${label ? 'pt-6 pb-2' : 'py-3'} ${icon ? 'pl-11' : 'pl-3'} pr-3 border rounded-lg transition-all duration-200 bg-white ${
+          className={`w-full py-3 ${icon ? 'pl-11' : 'pl-3'} pr-3 border rounded-lg transition-all duration-200 bg-white ${
             error
               ? 'border-error focus:border-error focus:ring-2 focus:ring-error/20' 
               : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20'

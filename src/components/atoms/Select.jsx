@@ -16,14 +16,10 @@ const Select = ({
   const [focused, setFocused] = useState(false);
   const hasValue = value && value.toString().length > 0;
 
-  return (
-<div className={`relative ${className}`}>
+return (
+    <div className={className}>
       {label && (
-        <label className={`absolute left-3 transition-all duration-200 pointer-events-none z-20 ${
-          focused || hasValue 
-            ? 'top-2 text-xs text-primary font-semibold' 
-            : 'top-4 text-sm text-gray-700 font-medium'
-        }`}>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           {label}
           {required && <span className="text-error ml-1">*</span>}
         </label>
@@ -36,12 +32,12 @@ const Select = ({
           disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className={`w-full appearance-none ${label ? 'pt-6 pb-2' : 'py-3'} pl-3 pr-10 border rounded-lg transition-all duration-200 ${
+          className={`w-full appearance-none py-3 pl-3 pr-10 border rounded-lg transition-all duration-200 ${
             error 
               ? 'border-error focus:border-error focus:ring-2 focus:ring-error/20' 
               : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20'
           } ${disabled ? 'bg-gray-50 cursor-not-allowed' : 'bg-white cursor-pointer'}`}
-{...props}
+          {...props}
         >
           <option value="" disabled hidden>
             {!hasValue ? placeholder : ''}
