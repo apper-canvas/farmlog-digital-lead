@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "farmId": "1",
+    "amount": 450.00,
+    "category": "Seeds",
+    "date": "2024-04-10",
+    "description": "Corn seed variety XL-2400 - 50 bags"
+  },
+  {
+    "id": "2",
+    "farmId": "1",
+    "amount": 320.00,
+    "category": "Fertilizer",
+    "date": "2024-05-15",
+    "description": "Nitrogen fertilizer application"
+  },
+  {
+    "id": "3",
+    "farmId": "2",
+    "amount": 180.00,
+    "category": "Equipment",
+    "date": "2024-06-02",
+    "description": "Irrigation timer replacement"
+  },
+  {
+    "id": "4",
+    "farmId": "2",
+    "amount": 275.00,
+    "category": "Labor",
+    "date": "2024-06-20",
+    "description": "Seasonal workers - tomato maintenance"
+  },
+  {
+    "id": "5",
+    "farmId": "3",
+    "amount": 890.00,
+    "category": "Equipment",
+    "date": "2024-07-01",
+    "description": "Combine harvester maintenance"
+  },
+  {
+    "id": "6",
+    "farmId": "4",
+    "amount": 650.00,
+    "category": "Seeds",
+    "date": "2024-03-25",
+    "description": "Alfalfa seed - premium variety"
+  },
+  {
+    "id": "7",
+    "farmId": "1",
+    "amount": 125.00,
+    "category": "Fuel",
+    "date": "2024-07-10",
+    "description": "Diesel fuel for tractors"
+  }
+]

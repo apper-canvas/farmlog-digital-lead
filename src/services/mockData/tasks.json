@@ -1,0 +1,65 @@
+[
+  {
+    "id": "1",
+    "farmId": "1",
+    "cropId": "1",
+    "title": "Water corn fields - Section A",
+    "dueDate": "2024-07-18",
+    "priority": "High",
+    "completed": false
+  },
+  {
+    "id": "2",
+    "farmId": "1",
+    "cropId": "2",
+    "title": "Apply fertilizer to soybean crops",
+    "dueDate": "2024-07-20",
+    "priority": "Medium",
+    "completed": false
+  },
+  {
+    "id": "3",
+    "farmId": "2",
+    "cropId": "3",
+    "title": "Harvest tomatoes - first picking",
+    "dueDate": "2024-07-17",
+    "priority": "High",
+    "completed": false
+  },
+  {
+    "id": "4",
+    "farmId": "2",
+    "cropId": "4",
+    "title": "Prune bell pepper plants",
+    "dueDate": "2024-07-19",
+    "priority": "Low",
+    "completed": false
+  },
+  {
+    "id": "5",
+    "farmId": "3",
+    "cropId": "5",
+    "title": "Prepare harvesting equipment for wheat",
+    "dueDate": "2024-07-22",
+    "priority": "High",
+    "completed": true
+  },
+  {
+    "id": "6",
+    "farmId": "4",
+    "cropId": "6",
+    "title": "Check irrigation systems",
+    "dueDate": "2024-07-16",
+    "priority": "Medium",
+    "completed": true
+  },
+  {
+    "id": "7",
+    "farmId": "1",
+    "cropId": "1",
+    "title": "Pest inspection - corn fields",
+    "dueDate": "2024-07-21",
+    "priority": "Medium",
+    "completed": false
+  }
+]

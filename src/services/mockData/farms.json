@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "Green Valley Farm",
+    "size": 150,
+    "location": "Northern Plains, Iowa",
+    "createdAt": "2024-01-15T08:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Sunrise Acres",
+    "size": 85,
+    "location": "Central Valley, California",
+    "createdAt": "2024-02-03T10:30:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Heritage Fields",
+    "size": 200,
+    "location": "Midwest Corridor, Nebraska",
+    "createdAt": "2024-01-28T14:15:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Prairie View Ranch",
+    "size": 320,
+    "location": "Great Plains, Kansas",
+    "createdAt": "2024-03-12T09:45:00.000Z"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "farmId": "1",
+    "cropType": "Corn",
+    "plantingDate": "2024-04-15",
+    "expectedHarvestDate": "2024-09-20",
+    "status": "Growing",
+    "area": 75
+  },
+  {
+    "id": "2",
+    "farmId": "1",
+    "cropType": "Soybeans",
+    "plantingDate": "2024-05-01",
+    "expectedHarvestDate": "2024-10-15",
+    "status": "Growing",
+    "area": 50
+  },
+  {
+    "id": "3",
+    "farmId": "2",
+    "cropType": "Tomatoes",
+    "plantingDate": "2024-03-20",
+    "expectedHarvestDate": "2024-07-30",
+    "status": "Ready to Harvest",
+    "area": 25
+  },
+  {
+    "id": "4",
+    "farmId": "2",
+    "cropType": "Bell Peppers",
+    "plantingDate": "2024-04-01",
+    "expectedHarvestDate": "2024-08-15",
+    "status": "Growing",
+    "area": 15
+  },
+  {
+    "id": "5",
+    "farmId": "3",
+    "cropType": "Wheat",
+    "plantingDate": "2024-03-10",
+    "expectedHarvestDate": "2024-07-25",
+    "status": "Ready to Harvest",
+    "area": 120
+  },
+  {
+    "id": "6",
+    "farmId": "4",
+    "cropType": "Alfalfa",
+    "plantingDate": "2024-04-05",
+    "expectedHarvestDate": "2024-06-30",
+    "status": "Growing",
+    "area": 180
+  }
+]

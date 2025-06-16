@@ -1,0 +1,56 @@
+{
+  "current": {
+    "temperature": 78,
+    "condition": "Partly Cloudy",
+    "humidity": 65,
+    "windSpeed": 12,
+    "precipitation": 0
+  },
+  "forecast": [
+    {
+      "date": "2024-07-17",
+      "high": 82,
+      "low": 68,
+      "condition": "Sunny",
+      "precipitation": 0,
+      "humidity": 58,
+      "windSpeed": 10
+    },
+    {
+      "date": "2024-07-18",
+      "high": 85,
+      "low": 71,
+      "condition": "Partly Cloudy",
+      "precipitation": 10,
+      "humidity": 62,
+      "windSpeed": 15
+    },
+    {
+      "date": "2024-07-19",
+      "high": 79,
+      "low": 65,
+      "condition": "Light Rain",
+      "precipitation": 75,
+      "humidity": 78,
+      "windSpeed": 18
+    },
+    {
+      "date": "2024-07-20",
+      "high": 76,
+      "low": 62,
+      "condition": "Overcast",
+      "precipitation": 40,
+      "humidity": 72,
+      "windSpeed": 14
+    },
+    {
+      "date": "2024-07-21",
+      "high": 81,
+      "low": 67,
+      "condition": "Partly Cloudy",
+      "precipitation": 20,
+      "humidity": 60,
+      "windSpeed": 12
+    }
+  ]
+}
