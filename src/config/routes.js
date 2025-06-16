@@ -1,8 +1,11 @@
-import Dashboard from '@/components/pages/Dashboard';
-import Farms from '@/components/pages/Farms';
+import CropDetails from '@/components/pages/CropDetails';
 import Crops from '@/components/pages/Crops';
-import Tasks from '@/components/pages/Tasks';
+import Dashboard from '@/components/pages/Dashboard';
+import ExpenseDetails from '@/components/pages/ExpenseDetails';
 import Expenses from '@/components/pages/Expenses';
+import FarmDetails from '@/components/pages/FarmDetails';
+import Farms from '@/components/pages/Farms';
+import Tasks from '@/components/pages/Tasks';
 import Weather from '@/components/pages/Weather';
 
 export const routes = {
@@ -50,5 +53,27 @@ export const routes = {
   }
 };
 
+export const detailRoutes = {
+  farmDetails: {
+    id: 'farm-details',
+    label: 'Farm Details',
+    path: '/farms/:id',
+    component: FarmDetails
+  },
+  cropDetails: {
+    id: 'crop-details',
+    label: 'Crop Details',
+    path: '/crops/:id',
+    component: CropDetails
+  },
+  expenseDetails: {
+    id: 'expense-details',
+    label: 'Expense Details',
+    path: '/expenses/:id',
+    component: ExpenseDetails
+  }
+};
+
 export const routeArray = Object.values(routes);
+export const detailRouteArray = Object.values(detailRoutes);
 export default routes;

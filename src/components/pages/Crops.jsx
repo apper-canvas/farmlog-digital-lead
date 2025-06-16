@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
@@ -185,6 +186,7 @@ const CropForm = ({ isOpen, onClose, onSubmit, farms, loading }) => {
 };
 
 const Crops = () => {
+  const navigate = useNavigate();
   const [crops, setCrops] = useState([]);
   const [farms, setFarms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -415,8 +417,10 @@ const Crops = () => {
                             }}
                             transition={{
                                 delay: index * 0.05
-                            }}
-                            className="hover:bg-gray-50">
+}}
+                            className="hover:bg-gray-50 cursor-pointer"
+                            onClick={() => navigate(`/crops/${crop.id}`)}
+                            >
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                     <div

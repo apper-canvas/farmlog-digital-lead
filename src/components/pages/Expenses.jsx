@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 import { toast } from 'react-toastify';
@@ -15,6 +16,7 @@ import EmptyState from '@/components/molecules/EmptyState';
 import { expenseService, farmService } from '@/services';
 
 const Expenses = () => {
+  const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
   const [farms, setFarms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +34,6 @@ const Expenses = () => {
     description: ''
   });
   const [formLoading, setFormLoading] = useState(false);
-
   const categories = [
     'Seeds',
     'Fertilizer', 
@@ -340,9 +341,10 @@ const Expenses = () => {
                 <motion.div
                   key={expense.id}
                   initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="p-6 hover:bg-gray-50 transition-colors"
+                  className="p-6 hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => navigate(`/expenses/${expense.id}`)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4 flex-1 min-w-0">
@@ -396,11 +398,14 @@ const Expenses = () => {
                         </div>
                       </div>
                       
-                      <Button
+<Button
                         variant="ghost"
                         size="sm"
                         icon="Trash2"
-                        onClick={() => handleDeleteExpense(expense.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteExpense(expense.id);
+                        }}
                         className="text-error hover:bg-error/10"
                       />
                     </div>

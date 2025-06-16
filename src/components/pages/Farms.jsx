@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import Button from '@/components/atoms/Button';
@@ -11,6 +12,7 @@ import EmptyState from '@/components/molecules/EmptyState';
 import { farmService, cropService } from '@/services';
 
 const Farms = () => {
+  const navigate = useNavigate();
   const [farms, setFarms] = useState([]);
   const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +20,6 @@ const Farms = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [selectedFarm, setSelectedFarm] = useState(null);
-
   useEffect(() => {
     loadData();
   }, []);
@@ -192,9 +193,9 @@ const Farms = () => {
               <FarmCard
                 farm={farm}
                 cropsCount={getCropsCount(farm.id)}
-                onEdit={handleEditFarm}
+onEdit={handleEditFarm}
                 onDelete={handleDeleteFarm}
-                onView={() => {/* TODO: Navigate to farm details */}}
+                onView={() => navigate(`/farms/${farm.id}`)}
               />
             </motion.div>
           ))}
